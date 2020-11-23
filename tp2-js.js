@@ -30,17 +30,14 @@ const local = {
 // que es la suma de los precios de cada componente incluido.
 
 const precioMaquina = (array) => {
-    //console.log("calculando precio de maquina: " + array);
 
     let precioTotal = 0;
     array.forEach(element => {
         let componente = local.precios.find(obj => obj.componente === element);
         if (componente) { //verifico truthy del dato componente(si no es ni null, ni empty string, ni undefined, ni NaN, ni 0 o false da true)
-            //console.log("el componente " + componente.componente + " cuesta $" + componente.precio);
             precioTotal = precioTotal + componente.precio;
         }
     });
-    //console.log("precio total de la maquina: $" + precioTotal);
     return precioTotal;
 }
 //console.log(precioMaquina(["Monitor GPRS 3000", "Motherboard ASUS 1500"])); // 320 ($200 del monitor + $120 del motherboard)
@@ -50,12 +47,12 @@ const precioMaquina = (array) => {
 //una máquina que se vendió. La lista de ventas no se pasa por parámetro, se asume que está identificada por la variable ventas.
 
 const cantidadVentasComponente = (componente) => {
+
     let cantidadVentas = 0;
     local.ventas.forEach(venta => {
         let cantidadVenta = venta.componentes.filter(comp => comp === componente).length;
         cantidadVentas = cantidadVentas + cantidadVenta;
     });
-
     return cantidadVentas;
 }
 //console.log(cantidadVentasComponente("Monitor ASC 543")); // 2
@@ -95,16 +92,14 @@ const vendedoraDelMes = (mes, anio) => {
 //ventasMes(mes, anio): Obtener las ventas de un mes. El mes es un número entero que va desde el 1 (enero) hasta el 12 (diciembre).
 
 const ventasMes = (mes, anio) => {
+
     let cantidadVentasDeUnMes = 0;
-    //console.log("buscando ventas del mes " + mes + " y año " + anio)
     let ventasDelMes = local.ventas.filter(
         (venta) =>
             venta.fecha.getFullYear() === anio && venta.fecha.getMonth() === mes - 1
     );
-    //console.log("ventas del mes " + mes + ": " + ventasDelMes)
     importeVentasM = 0;
     ventasDelMes.forEach((vnt) => {
-
         importeVentasM = importeVentasM + precioMaquina(vnt.componentes);
     });
 
@@ -117,9 +112,9 @@ const ventasMes = (mes, anio) => {
 //ventasVendedora(nombre): Obtener las ventas totales realizadas por una vendedora sin límite de fecha.
 
 const ventasVendedora = (nombre) => {
+
     let ventasTotales = 0;
     const ventasPorVendedora = local.ventas.filter((venta) => venta.nombreVendedora === nombre);
-    //console.log(ventasPorVendedora);
 
     ventasPorVendedora.forEach((vnt) => {
         ventasTotales = ventasTotales + precioMaquina(vnt.componentes);
@@ -170,9 +165,11 @@ local.ventas.forEach(venta => venta.sucursal = "Centro");
 
 //console.log(JSON.stringify(local.ventas))
 
+
 //Agregar al objeto principal la propiedad sucursales: ['Centro', 'Caballito']
+
 local.sucursales = ['Centro', 'Caballito'];
-//console.log(local)
+//console.log(local);
 
 //Cargar la siguiente información en el array ventas, creando sus respectivos objetos siguiendo el patrón: fecha, nombreVendedora, componentes, sucursal
 
@@ -212,16 +209,17 @@ local.ventas.push({ fecha: new Date(2019, 1, 5), nombreVendedora: "Ada", compone
 local.ventas.push({ fecha: new Date(2019, 1, 1), nombreVendedora: "Grace", componentes: ["Motherboard MZI", "HDD Wezter Dishital"], sucursal: "Centro" }),
     local.ventas.push({ fecha: new Date(2019, 1, 7), nombreVendedora: "Sheryl", componentes: ["Monitor GPRS 3000", "RAM Quinston"], sucursal: "Caballito" });
 local.ventas.push({ fecha: new Date(2019, 1, 14), nombreVendedora: "Ada", componentes: ["Motherboard ASUS 1200", "HDD Toyiva"], sucursal: "Centro" });
-//console.log(local)
+
+//console.log(local);
+
 
 //Crear la función ventasSucursal(sucursal), que obtiene las ventas totales realizadas por una sucursal sin límite de fecha.
 
 const ventasSucursal = (sucursal) => {
+
     let ventasTotales = 0;
-    //console.log("calculando ingresos totales para sucursal " + sucursal)
     local.ventas.forEach((vnt) => {
         if (vnt.sucursal === sucursal) {
-            //console.log("en la fecha " + vnt.fecha + " se vendieron " + vnt.componentes + " por $" + precioMaquina(vnt.componentes))
             ventasTotales = ventasTotales + precioMaquina(vnt.componentes)
         }
     });
@@ -235,12 +233,12 @@ const ventasSucursal = (sucursal) => {
 Entonces, ¿cómo harías para que ambas funciones reutilicen código y evitemos repetir?
 Haciendo dinámica la parte del argumento de la función, es decir, poniendo como parámetro la propiedad (prop) y reemplazandola donde corresponda dentro de la función. 
 Lo mismo con el segundo parámetro "valor". Ej:*/
+
 const ventasPorProp = (prop, value) => {
+
     let ventasTotales = 0;
-    //console.log("calculando ingresos totales para " + prop + " " + value)
     local.ventas.forEach((vnt) => {
         if (vnt[prop] === value) {
-            //console.log("en la fecha " + vnt.fecha + " se vendieron " + vnt.componentes + " por $" + precioMaquina(vnt.componentes))
             ventasTotales = ventasTotales + precioMaquina(vnt.componentes)
         }
     });
@@ -259,7 +257,6 @@ const sucursalDelMes = (mes, anio) => {
     ventasDelMes = []
     for (let venta of local.ventas) {
         if (venta.fecha.getMonth() === mes - 1 && venta.fecha.getFullYear() === anio) {
-            //console.log("en la fecha " + venta.fecha + " se vendieron " + venta.componentes)
             ventasDelMes.push(venta);
         }
     }
@@ -281,7 +278,7 @@ const sucursalDelMes = (mes, anio) => {
     return mejorSucursal;
 
 }
-//console.log("sucursal del mes: " + sucursalDelMes(1, 2019)); // "Centro"
+//console.log("Sucursal del mes: " + sucursalDelMes(1, 2019)); // "Centro"
 
 
 /*3) Para tener una mejor muestra de como está resultando el local, queremos desarrollar un reporte que nos muestre las ventas por sucursal y por mes.
@@ -296,10 +293,7 @@ const renderPorMes = (anio) => {
         console.log(`Ventas de ${key}: $`, ventasMes(value + 1, anio))
     });
 }
-console.log(renderPorMes(2019));
-// Ventas por mes:
-//   Total de enero 2019: 1250
-//   Total de febrero 2019: 4210
+//console.log(renderPorMes(2019));
 
 
 //renderPorSucursal(): Muestra una lista del importe total vendido por cada sucursal
@@ -312,10 +306,7 @@ const renderPorSucursal = () => {
     });
 }
 
-console.log(renderPorSucursal());
-// Ventas por sucursal:
-//   Total de Centro: 4195
-//   Total de Caballito: 1265
+//console.log(renderPorSucursal());
 
 
 //render(): Tiene que mostrar la unión de los dos reportes anteriores, cual fue el producto más vendido y la vendedora que más ingresos generó
@@ -333,28 +324,29 @@ const vendedoraQueMasIngresosGenero = () => {
 
     return mejorVendedora;
 }
-console.log('Vendedora que más ingresos generó: ' + vendedoraQueMasIngresosGenero());
+//console.log('Vendedora que más ingresos generó: ' + vendedoraQueMasIngresosGenero());
 
 const render = () => {
     console.log('Reporte.')
     console.log('Ventas por mes.')
     console.log(renderPorMes(2019));
-    //console.log('Ventas por sucursal.')
     console.log(renderPorSucursal());
     console.log('Producto estrella: ' + componenteMasVendido());
     console.log('Vendedora que más ingresos generó: ' + vendedoraQueMasIngresosGenero());
 }
 render();
-//console.log(render());
-// Reporte
-// Ventas por mes:
-//   Total de enero 2019: 1250
-//   Total de febrero 2019: 4210
-// Ventas por sucursal:
-//   Total de Centro: 4195
-//   Total de Caballito: 1265
-// Producto estrella: Monitor GPRS 3000
-// Vendedora que más ingresos generó: Grace*/
+
+
+
+/*Reporte
+Ventas por mes:
+Total de enero 2019: 1250
+Total de febrero 2019: 4210
+Ventas por sucursal:
+Total de Centro: 4195
+otal de Caballito: 1265
+Producto estrella: Monitor GPRS 3000
+Vendedora que más ingresos generó: Grace*/
 
 
 // ************************************************************************************************************************************
@@ -380,13 +372,12 @@ const renderDinamico = () => {
     for (let [i, mes] of mesesRender.entries()) {
         const itemList = document.createElement('li');
         itemList.className = 'list-group-item d-flex justify-content-between align-items-center';
-        console.log('ventas del mes ' + mes + ': ' + ventasMes(i + 1, Number(anio.value)))
+        //console.log('ventas del mes ' + mes + ': ' + ventasMes(i + 1, Number(anio.value)))
         let texto = `Ventas de ${mes}: $` + ventasMes(i + 1, Number(anio.value))
         itemList.textContent = texto;
         fragment.appendChild(itemList);
+        listaMeses.appendChild(fragment);
     }
-    //console.log(fragment);
-    listaMeses.appendChild(fragment);
 
     const h5 = document.createElement('h5');
     h5.className = 'text-center mt-5';
@@ -423,12 +414,11 @@ const renderDinamico = () => {
     document.body.appendChild(h5Componente);
     document.body.appendChild(h5Vendedora);
 
-
 }
 
 //renderDinamico();
 
-document.addEventListener('click', function () {
+document.addEventListener('onclick', function () {
     listaMeses.style.display = 'block'
     renderDinamico();
 
