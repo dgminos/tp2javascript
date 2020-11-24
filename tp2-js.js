@@ -356,32 +356,22 @@ const btn = document.getElementById('btn');
 
 const mesesRender = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', '0ctubre', 'Noviembre', 'Diciembre'];
 const listaMeses = document.getElementById('listaMeses');
-listaMeses.style.display = 'none';
 const listaSucursales = document.getElementById('listaSucursales');
 
 const renderDinamico = () => {
 
     const anio = document.getElementById("inputAnio")
-    const h5Titulo = document.createElement('h5');
-    h5Titulo.className = 'text-center mt-5';
-    h5Titulo.appendChild(document.createTextNode('Ventas por mes:'));
-    document.body.appendChild(h5Titulo);
 
-    const fragment = document.createDocumentFragment();
 
     for (let [i, mes] of mesesRender.entries()) {
         const itemList = document.createElement('li');
         itemList.className = 'list-group-item d-flex justify-content-between align-items-center';
-        //console.log('ventas del mes ' + mes + ': ' + ventasMes(i + 1, Number(anio.value)))
         let texto = `Ventas de ${mes}: $` + ventasMes(i + 1, Number(anio.value))
         itemList.textContent = texto;
-        fragment.appendChild(itemList);
-        listaMeses.appendChild(fragment);
+        listaMeses.appendChild(itemList);
     }
 
-    const h5 = document.createElement('h5');
-    h5.className = 'text-center mt-5';
-    h5.appendChild(document.createTextNode('Ventas por sucursal:'));
+
     for (sucursal of local.sucursales) {
         const itemLista = document.createElement('li');
         itemLista.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -390,36 +380,28 @@ const renderDinamico = () => {
         listaSucursales.appendChild(itemLista);
     }
 
-    const h5Componente = document.createElement('h5');
-    h5Componente.appendChild(document.createTextNode('Producto estrella: '));
-    h5Componente.className = 'text-center mt-5';
 
     const productoEstrella = document.createElement('h6');
     const txt = componenteMasVendido();
     productoEstrella.textContent = txt;
-    h5Componente.appendChild(productoEstrella);
+    document.getElementById("productoEstrella").appendChild(productoEstrella);
 
-    const h5Vendedora = document.createElement('h5');
-    h5Vendedora.appendChild(document.createTextNode('Vendedora que más ingresos generó: '));
-    h5Vendedora.className = 'text-center mt-5';
 
     const mejorVendedora = document.createElement('h6');
     const textoVendedora = vendedoraQueMasIngresosGenero();
     mejorVendedora.textContent = textoVendedora;
-    h5Vendedora.appendChild(mejorVendedora);
+    document.getElementById("mejorVendedora").appendChild(mejorVendedora);
 
-    document.body.appendChild(listaMeses);
-    document.body.appendChild(h5);
-    document.body.appendChild(listaSucursales);
-    document.body.appendChild(h5Componente);
-    document.body.appendChild(h5Vendedora);
+    var h5 = document.getElementsByTagName("h5");
+    for (let i = 0; i < h5.length; i++) {
+        h5[i].style.visibility = "visible";
+    }
 
+
+    btn.style.visibility = "hidden";
 }
 
-//renderDinamico();
-
 document.addEventListener('onclick', function () {
-    listaMeses.style.display = 'block'
     renderDinamico();
 
 }, btn);
