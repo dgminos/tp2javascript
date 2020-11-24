@@ -350,18 +350,16 @@ Vendedora que más ingresos generó: Grace*/
 
 
 // ************************************************************************************************************************************
-//RENDER DINÁMICO.
+//RENDER DOM
 
 const btn = document.getElementById('btn');
-
-const mesesRender = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', '0ctubre', 'Noviembre', 'Diciembre'];
 const listaMeses = document.getElementById('listaMeses');
 const listaSucursales = document.getElementById('listaSucursales');
+const anio = document.getElementById("inputAnio")
+
+const mesesRender = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', '0ctubre', 'Noviembre', 'Diciembre'];
 
 const renderDinamico = () => {
-
-    const anio = document.getElementById("inputAnio")
-
 
     for (let [i, mes] of mesesRender.entries()) {
         const itemList = document.createElement('li');
@@ -371,7 +369,6 @@ const renderDinamico = () => {
         listaMeses.appendChild(itemList);
     }
 
-
     for (sucursal of local.sucursales) {
         const itemLista = document.createElement('li');
         itemLista.className = 'list-group-item d-flex justify-content-between align-items-center';
@@ -380,23 +377,20 @@ const renderDinamico = () => {
         listaSucursales.appendChild(itemLista);
     }
 
-
     const productoEstrella = document.createElement('h6');
     const txt = componenteMasVendido();
     productoEstrella.textContent = txt;
     document.getElementById("productoEstrella").appendChild(productoEstrella);
-
 
     const mejorVendedora = document.createElement('h6');
     const textoVendedora = vendedoraQueMasIngresosGenero();
     mejorVendedora.textContent = textoVendedora;
     document.getElementById("mejorVendedora").appendChild(mejorVendedora);
 
-    var h5 = document.getElementsByTagName("h5");
+    const h5 = document.getElementsByTagName("h5");
     for (let i = 0; i < h5.length; i++) {
         h5[i].style.visibility = "visible";
     }
-
 
     btn.style.visibility = "hidden";
 }
