@@ -3,6 +3,9 @@ body {
     background-color: lightsteelblue;
 }
 
+h3 {
+    text-decoration: underline;
+}
 h5 {
     margin-left: 50px;
     font-weight: bold;
